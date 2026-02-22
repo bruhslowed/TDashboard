@@ -15,7 +15,8 @@ app.use(express.json());
 // app.get("/api/temperature", (req, res) => {
 //   res.json(temperatureData);
 // });
-const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ESP8266_sensor";
+const mongoURI =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/ESP8266_sensor";
 
 mongoose
   .connect(mongoURI)

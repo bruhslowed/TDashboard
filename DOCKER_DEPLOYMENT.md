@@ -3,6 +3,7 @@
 ## Quick Start on Raspberry Pi 5
 
 ### Prerequisites
+
 - Docker & Docker Compose installed
 - Raspberry Pi running 64-bit OS (arm64)
 
@@ -14,6 +15,7 @@ docker compose up -d --build
 ```
 
 ### Access the System
+
 - **Frontend:** `http://raspberrypi.local:5173` or `http://<PI_IP>:5173`
 - **Backend API:** `http://<PI_IP>:3001`
 - **MongoDB:** `mongodb://<PI_IP>:27017/ESP8266_sensor`
@@ -22,11 +24,13 @@ docker compose up -d --build
 ### Useful Commands
 
 Check container status:
+
 ```bash
 docker compose ps
 ```
 
 View logs:
+
 ```bash
 docker compose logs -f backend      # Backend
 docker compose logs -f frontend     # Frontend
@@ -35,16 +39,19 @@ docker compose logs -f mongo        # Database
 ```
 
 Rebuild a single service:
+
 ```bash
 docker compose up -d --build backend
 ```
 
 Stop everything:
+
 ```bash
 docker compose down
 ```
 
 Stop and remove all data (warning: deletes DB):
+
 ```bash
 docker compose down -v
 ```
@@ -61,6 +68,7 @@ All services communicate via Docker network `iot_network`.
 ### Environment Variables
 
 Set in `docker-compose.yml`:
+
 - `MONGODB_URI` — MongoDB connection (default: `mongodb://mongo:27017/ESP8266_sensor`)
 - `MQTT_BROKER` — MQTT broker URL (default: `mqtt://mosquitto:1883`)
 - `PORT` — Backend port (default: `3001`)
@@ -76,15 +84,18 @@ Data persists across container restarts; use `docker compose down -v` to wipe.
 ### Troubleshooting
 
 **Backend can't connect to MongoDB:**
+
 ```bash
 docker compose logs mongo
 ```
+
 Ensure MongoDB is running and healthy.
 
 **Frontend shows API errors:**
 Check that Nginx is routing `/api` to backend correctly. View `Frontend/nginx.conf`.
 
 **MQTT not connecting:**
+
 ```bash
 docker exec iot_mosquitto mosquitto_sub -h localhost -t 'temperature/data'
 ```
