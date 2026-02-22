@@ -8,11 +8,16 @@ let client;
 
 module.exports = {
   connect() {
-    client = mqtt.connect("mqtt://localhost:1883");
+    const mqttBroker = process.env.MQTT_BROKER || "mqtt://mosquitto:1883";
+    client = mqtt.connect(mqttBroker);
 
     client.on("connect", () => {
-      console.log("✅ Connected to MQTT broker");
+      console.log("✅ Connected to MQTT broker at:", mqttBroker);
       client.subscribe("temperature/data");
+    });
+
+    client.on("error", (err) => {
+      console.error("❌ MQTT connection error:", err);
     });
 
     client.on("message", async (topic, message) => {
