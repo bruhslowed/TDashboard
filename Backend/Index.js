@@ -15,9 +15,11 @@ app.use(express.json());
 // app.get("/api/temperature", (req, res) => {
 //   res.json(temperatureData);
 // });
+const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ESP8266_sensor";
+
 mongoose
-  .connect("mongodb://localhost:27017/ESP8266_sensor")
-  .then(() => console.log("✅ Connected to MongoDB"))
+  .connect(mongoURI)
+  .then(() => console.log("✅ Connected to MongoDB at:", mongoURI))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Use routes that starts with api/temperature
