@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URLS } from "./constants/const";
 import HomePage from "./components/Homepage";
-import DeviceDashboard from "./components/DeviceDashboard";
+import DeviceDashboard from "./components/Devicedashboard";
 
 function App() {
   const [currentView, setCurrentView] = useState("home");
