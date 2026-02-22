@@ -17,12 +17,21 @@ function DeviceDashboard({ device, onBack }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeRange, setTimeRange] = useState("20");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const fetchTemperature = async () => {
     try {
-      const response = await axios.get(
-        `${API_URLS.TEMPERATURES}?deviceId=${device.deviceId}&limit=${timeRange}`,
-      );
+      let url = `${API_URLS.TEMPERATURES}?deviceId=${device.deviceId}`;
+      
+      // Use date range if set, otherwise use limit
+      if (startDate && endDate) {
+        url += `&startDate=${startDate}&endDate=${endDate}`;
+      } else {
+        url += `&limit=${timeRange}`;
+      }
+      
+      const response = await axios.get(url);
       setTemperatureData(response.data);
       setLoading(false);
     } catch (error) {
@@ -36,7 +45,7 @@ function DeviceDashboard({ device, onBack }) {
     fetchTemperature();
     const interval = setInterval(fetchTemperature, 5000);
     return () => clearInterval(interval);
-  }, [device.deviceId, timeRange]);
+  }, [device.deviceId, timeRange, startDate, endDate]);
 
   const chartData = temperatureData
     .slice()
@@ -170,9 +179,13 @@ function DeviceDashboard({ device, onBack }) {
           {["20", "50", "100"].map((range) => (
             <button
               key={range}
-              onClick={() => setTimeRange(range)}
+              onClick={() => {
+                setTimeRange(range);
+                setStartDate("");
+                setEndDate("");
+              }}
               style={{
-                backgroundColor: timeRange === range ? "#4CAF50" : "#2a2a2a",
+                backgroundColor: timeRange === range && !startDate ? "#4CAF50" : "#2a2a2a",
                 color: "#fff",
                 border: "none",
                 padding: "10px 20px",
@@ -184,6 +197,75 @@ function DeviceDashboard({ device, onBack }) {
               Last {range} readings
             </button>
           ))}
+        </div>
+
+        <div
+          style={{
+            marginBottom: "20px",
+            padding: "15px",
+            backgroundColor: "#1a1a1a",
+            borderRadius: "8px",
+            display: "flex",
+            gap: "15px",
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <label style={{ color: "#888", fontSize: "0.9em" }}>Start Date & Time</label>
+            <input
+              type="datetime-local"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              style={{
+                padding: "8px 12px",
+                backgroundColor: "#2a2a2a",
+                color: "#fff",
+                border: "1px solid #444",
+                borderRadius: "6px",
+                fontSize: "0.9em",
+                marginTop: "5px",
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ color: "#888", fontSize: "0.9em" }}>End Date & Time</label>
+            <input
+              type="datetime-local"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              style={{
+                padding: "8px 12px",
+                backgroundColor: "#2a2a2a",
+                color: "#fff",
+                border: "1px solid #444",
+                borderRadius: "6px",
+                fontSize: "0.9em",
+                marginTop: "5px",
+              }}
+            />
+          </div>
+
+          {(startDate || endDate) && (
+            <button
+              onClick={() => {
+                setStartDate("");
+                setEndDate("");
+              }}
+              style={{
+                padding: "8px 15px",
+                backgroundColor: "#f44336",
+                color: "#fff",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontSize: "0.9em",
+              }}
+            >
+              Clear Dates
+            </button>
+          )}
         </div>
 
         <div
