@@ -89,7 +89,7 @@ function DeviceDashboard({ device, onBack }) {
   const [temperatureData, setTemperatureData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [timeRange, setTimeRange] = useState("20");
+  const [timeRange, setTimeRange] = useState("50");
 
   const fetchTemperature = async () => {
     try {
