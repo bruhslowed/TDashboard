@@ -27,6 +27,7 @@ module.exports = {
         // Save temperature
         await dbService.addTemperature(
           data.temperature,
+          data.humidity || null,
           new Date(),
           data.deviceId,
         );
