@@ -458,7 +458,7 @@ function DeviceDashboard({ device, onBack }) {
                 dataKey="humidity"
                 stroke="#2196F3"
                 strokeWidth={2.5}
-                dot={{ r: 3, fill: "#2196F3" }}
+                dot={{ r: 3, fill: "#9370db" }}
                 name="Humidity (%)"
                 connectNulls
               />
@@ -515,15 +515,10 @@ function DeviceDashboard({ device, onBack }) {
             Heat index / "Feels like" temperature (left axis)
           </div>
           <div style={{ marginTop: "5px" }}>
-            🔵 <strong style={{ color: "#2196F3" }}>Blue line</strong> =
+            🔵 <strong style={{ color: "#9370db" }}>Blue line</strong> =
             Humidity percentage (right axis)
           </div>
-          {device.thresholdMin && device.thresholdMax && (
-            <div style={{ marginTop: "8px", color: "#4CAF50" }}>
-              The light green shaded area represents the comfortable temperature
-              range.
-            </div>
-          )}
+          {device.thresholdMin && device.thresholdMax}
         </div>
 
         {/* Recent Readings Table */}
