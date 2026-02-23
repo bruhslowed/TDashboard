@@ -10,7 +10,7 @@ function TimeRangeSelector({ timeRange, setTimeRange }) {
         flexWrap: "wrap",
       }}
     >
-      {["20", "50", "100"].map((range) => (
+      {["20", "50", "100", "150", "200"].map((range) => (
         <button
           key={range}
           onClick={() => setTimeRange(range)}
