@@ -6,6 +6,7 @@ import TimeRangeSelector from "./TimeRangeSelector";
 import DeviceChart from "./DeviceChart";
 import ChartGuide from "./ChartGuide";
 import RecentReadingsTable from "./RecentReadingsTable";
+import BreachHistory from "./BreachHistory";
 
 // Heat Index calculation function
 const calculateHeatIndex = (tempC, humidity) => {
@@ -194,6 +195,7 @@ function DeviceDashboard({ device, onBack }) {
           temperatureData={temperatureData}
           calculateHeatIndex={calculateHeatIndex}
         />
+        <BreachHistory deviceId={device.deviceId} />
       </div>
     </div>
   );
