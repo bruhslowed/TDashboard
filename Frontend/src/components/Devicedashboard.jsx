@@ -515,7 +515,7 @@ function DeviceDashboard({ device, onBack }) {
             Heat index / "Feels like" temperature (left axis)
           </div>
           <div style={{ marginTop: "5px" }}>
-            🔵 <strong style={{ color: "#9370db" }}>Blue line</strong> =
+            🔵 <strong style={{ color: "#9370db" }}>Purple line</strong> =
             Humidity percentage (right axis)
           </div>
           {device.thresholdMin && device.thresholdMax}
@@ -554,7 +554,7 @@ function DeviceDashboard({ device, onBack }) {
                   {item.temperature.toFixed(1)}°C
                 </span>
                 {item.humidity !== null && item.humidity !== undefined && (
-                  <span style={{ color: "#2196F3" }}>
+                  <span style={{ color: "#9370db" }}>
                     {item.humidity.toFixed(0)}% RH
                   </span>
                 )}
