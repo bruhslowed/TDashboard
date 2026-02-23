@@ -4,8 +4,11 @@ const mongoose = require("mongoose"); // for mongodb
 const mqttHandler = require("./services/mqttservice.js"); // for mqtt broker
 const temperatureRoutes = require("./Routes/temproutes.js"); // for api calls between front and backend
 const deviceRoutes = require("./Routes/deviceroutes.js");
+const breachRoutes = require("./Routes/breachroutes.js");
 
-console.log("📁 Temperature routes loaded:", typeof temperatureRoutes); // Should say "function"
+console.log("📁 Temperature routes loaded:", typeof temperatureRoutes);
+console.log("📁 Device routes loaded:", typeof deviceRoutes);
+console.log("📁 Breach routes loaded:", typeof breachRoutes);
 
 const app = express();
 app.use(cors());
@@ -26,6 +29,7 @@ mongoose
 // Use routes that starts with api/temperature
 app.use("/api/temperature", temperatureRoutes);
 app.use("/api/devices", deviceRoutes);
+app.use("/api/breaches", breachRoutes);
 
 // Connect to MQTT
 mqttHandler.connect();

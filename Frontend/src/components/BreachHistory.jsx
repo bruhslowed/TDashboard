@@ -1,4 +1,4 @@
-// components/BreachHistory.jsx
+// components/BreachHistory.jsx - Simplified Version
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URLS } from "../constants/const";
@@ -6,7 +6,6 @@ import { API_URLS } from "../constants/const";
 function BreachHistory({ deviceId }) {
   const [breaches, setBreaches] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchBreaches();
@@ -19,279 +18,124 @@ function BreachHistory({ deviceId }) {
       setLoading(false);
     } catch (error) {
       console.error("Error fetching breaches:", error);
-      setError(error.message);
       setLoading(false);
     }
   };
 
   const formatDuration = (seconds) => {
     if (seconds < 60) return `${seconds}s`;
-    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
-    const hours = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    return `${hours}h ${mins}m`;
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs}s`;
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+    return new Date(dateString).toLocaleString();
   };
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          backgroundColor: "#1a1a1a",
-          padding: "30px",
-          borderRadius: "15px",
-          textAlign: "center",
-          color: "#888",
-        }}
-      >
-        Loading breach history...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        style={{
-          backgroundColor: "#1a1a1a",
-          padding: "30px",
-          borderRadius: "15px",
-          textAlign: "center",
-          color: "#f44336",
-        }}
-      >
-        Error loading breaches: {error}
-      </div>
-    );
-  }
+  if (loading) return <div style={{ color: "#888" }}>Loading breaches...</div>;
 
   return (
     <div style={{ marginTop: 40 }}>
-      <h2
-        style={{
-          fontSize: "1.5em",
-          marginBottom: "20px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-        }}
-      >
-        <span>⚠️ Breach History</span>
-        <span
-          style={{
-            fontSize: "0.6em",
-            backgroundColor: breaches.length > 0 ? "#f44336" : "#4CAF50",
-            color: "#fff",
-            padding: "4px 12px",
-            borderRadius: "20px",
-            fontWeight: "normal",
-          }}
-        >
-          {breaches.length} {breaches.length === 1 ? "breach" : "breaches"}
-        </span>
+      <h2 style={{ fontSize: "1.5em", marginBottom: "20px" }}>
+        Breach History ({breaches.length})
       </h2>
 
       {breaches.length === 0 ? (
         <div
           style={{
             backgroundColor: "#1a1a1a",
-            padding: "40px",
-            borderRadius: "15px",
+            padding: "30px",
+            borderRadius: "10px",
             textAlign: "center",
             color: "#888",
           }}
         >
-          <div style={{ fontSize: "3em", marginBottom: "10px" }}>✅</div>
-          <div style={{ fontSize: "1.2em" }}>
-            No threshold breaches detected
-          </div>
-          <div style={{ marginTop: "10px", fontSize: "0.9em" }}>
-            This device has maintained temperature within acceptable range
-          </div>
+          No breaches detected
         </div>
       ) : (
-        <div
-          style={{
-            backgroundColor: "#1a1a1a",
-            borderRadius: "15px",
-            padding: "20px",
-            maxHeight: "500px",
-            overflowY: "auto",
-          }}
-        >
+        <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
           {breaches.map((breach, index) => (
             <div
               key={breach._id || index}
               style={{
+                backgroundColor: "#1a1a1a",
                 padding: "20px",
-                borderBottom:
-                  index < breaches.length - 1 ? "1px solid #333" : "none",
-                marginBottom: index < breaches.length - 1 ? "20px" : "0",
+                borderRadius: "10px",
+                borderLeft: `4px solid ${breach.breachType === "too_hot" ? "#f44336" : "#2196F3"}`,
               }}
             >
-              {/* Breach Header */}
+              {/* Header */}
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
+                  fontSize: "1.1em",
+                  fontWeight: "bold",
                   marginBottom: "15px",
-                  flexWrap: "wrap",
-                  gap: "10px",
+                  color:
+                    breach.breachType === "too_hot" ? "#f44336" : "#2196F3",
                 }}
               >
-                <div>
-                  <div
+                {breach.breachType === "too_hot" ? "🔥 HIGH" : "❄️ LOW"}{" "}
+                Temperature Breach
+                {!breach.isResolved && (
+                  <span
                     style={{
-                      fontSize: "1.2em",
-                      color:
-                        breach.breachType === "too_hot" ? "#f44336" : "#2196F3",
-                      fontWeight: "bold",
-                      marginBottom: "5px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
+                      marginLeft: "10px",
+                      fontSize: "0.7em",
+                      backgroundColor: "#f44336",
+                      padding: "3px 8px",
+                      borderRadius: "4px",
+                      color: "#fff",
                     }}
                   >
-                    <span>{breach.breachType === "too_hot" ? "🔥" : "❄️"}</span>
-                    <span>
-                      {breach.breachType === "too_hot" ? "HIGH" : "LOW"}{" "}
-                      Temperature Breach
-                    </span>
-                    {!breach.isResolved && (
-                      <span
-                        style={{
-                          fontSize: "0.7em",
-                          backgroundColor: "#f44336",
-                          padding: "4px 10px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        ONGOING
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ color: "#666", fontSize: "0.9em" }}>
-                    Breach #{breaches.length - index}
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    fontSize: "2.5em",
-                    fontWeight: "bold",
-                    color:
-                      breach.breachType === "too_hot" ? "#f44336" : "#2196F3",
-                  }}
-                >
-                  {breach.peakTemperature.toFixed(1)}°C
-                </div>
+                    ONGOING
+                  </span>
+                )}
               </div>
 
-              {/* Breach Details Grid */}
+              {/* Info Grid */}
               <div
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
                   gap: "15px",
-                  backgroundColor: "#0f0f0f",
-                  padding: "15px",
-                  borderRadius: "8px",
+                  fontSize: "0.9em",
                 }}
               >
-                {/* Start Time */}
                 <div>
-                  <div
-                    style={{
-                      fontSize: "0.8em",
-                      color: "#888",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    Started
+                  <div style={{ color: "#888", marginBottom: "5px" }}>
+                    Started:
                   </div>
-                  <div style={{ color: "#fff", fontWeight: "bold" }}>
+                  <div style={{ color: "#fff" }}>
                     {formatDate(breach.startTime)}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.85em",
-                      color: "#888",
-                      marginTop: "3px",
-                    }}
-                  >
-                    {breach.startTemperature.toFixed(1)}°C
                   </div>
                 </div>
 
-                {/* End Time */}
                 {breach.isResolved && breach.endTime && (
                   <div>
-                    <div
-                      style={{
-                        fontSize: "0.8em",
-                        color: "#888",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Ended
+                    <div style={{ color: "#888", marginBottom: "5px" }}>
+                      Ended:
                     </div>
-                    <div style={{ color: "#fff", fontWeight: "bold" }}>
+                    <div style={{ color: "#fff" }}>
                       {formatDate(breach.endTime)}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.85em",
-                        color: "#888",
-                        marginTop: "3px",
-                      }}
-                    >
-                      {breach.endTemperature.toFixed(1)}°C
                     </div>
                   </div>
                 )}
 
-                {/* Duration */}
                 <div>
-                  <div
-                    style={{
-                      fontSize: "0.8em",
-                      color: "#888",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    Duration
+                  <div style={{ color: "#888", marginBottom: "5px" }}>
+                    Duration:
                   </div>
-                  <div style={{ color: "#fff", fontWeight: "bold" }}>
+                  <div style={{ color: "#fff" }}>
                     {breach.duration
                       ? formatDuration(breach.duration)
-                      : !breach.isResolved
-                        ? "Ongoing..."
-                        : "N/A"}
+                      : "Ongoing"}
                   </div>
                 </div>
 
-                {/* Peak Temperature */}
                 <div>
-                  <div
-                    style={{
-                      fontSize: "0.8em",
-                      color: "#888",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    Peak Temperature
+                  <div style={{ color: "#888", marginBottom: "5px" }}>
+                    Peak Temp:
                   </div>
                   <div
                     style={{
@@ -305,70 +149,25 @@ function BreachHistory({ deviceId }) {
                   </div>
                 </div>
 
-                {/* Threshold Range */}
                 <div>
-                  <div
-                    style={{
-                      fontSize: "0.8em",
-                      color: "#888",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    Threshold Range
+                  <div style={{ color: "#888", marginBottom: "5px" }}>
+                    Threshold:
                   </div>
-                  <div style={{ color: "#fff", fontWeight: "bold" }}>
+                  <div style={{ color: "#fff" }}>
                     {breach.thresholdMin}°C - {breach.thresholdMax}°C
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.85em",
-                      color: "#f44336",
-                      marginTop: "3px",
-                    }}
-                  >
-                    {breach.breachType === "too_hot"
-                      ? `+${(breach.peakTemperature - breach.thresholdMax).toFixed(1)}°C over`
-                      : `${(breach.thresholdMin - breach.peakTemperature).toFixed(1)}°C under`}
                   </div>
                 </div>
 
-                {/* Location */}
-                {breach.location && (
-                  <div>
-                    <div
-                      style={{
-                        fontSize: "0.8em",
-                        color: "#888",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Location
-                    </div>
-                    <div style={{ color: "#fff" }}>{breach.location}</div>
+                <div>
+                  <div style={{ color: "#888", marginBottom: "5px" }}>
+                    Status:
                   </div>
-                )}
-              </div>
-
-              {/* Status Footer */}
-              <div
-                style={{
-                  marginTop: "15px",
-                  padding: "10px",
-                  backgroundColor: breach.isResolved ? "#1a3d1a" : "#3d1616",
-                  borderRadius: "6px",
-                  fontSize: "0.9em",
-                }}
-              >
-                <strong
-                  style={{ color: breach.isResolved ? "#4CAF50" : "#f44336" }}
-                >
-                  Status:
-                </strong>
-                <span style={{ color: "#fff", marginLeft: "8px" }}>
-                  {breach.isResolved
-                    ? `✓ Resolved - Temperature returned to normal`
-                    : `⚠ Ongoing - Temperature still out of range`}
-                </span>
+                  <div
+                    style={{ color: breach.isResolved ? "#4CAF50" : "#f44336" }}
+                  >
+                    {breach.isResolved ? "✓ Resolved" : "⚠ Ongoing"}
+                  </div>
+                </div>
               </div>
             </div>
           ))}
