@@ -4,10 +4,11 @@ const Device = require("../Schema/Device.js");
 
 let db = {
   // ========== TEMPERATURE FUNCTIONS ==========
-  async addTemperature(temp, currentDate, device_Name) {
+  async addTemperature(temp, humidity, currentDate, device_Name) {
     try {
       await Temp.create({
         temperature: temp,
+        humidity: humidity,
         date: currentDate,
         deviceId: device_Name,
       });
