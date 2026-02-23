@@ -56,7 +56,7 @@ const CustomTooltip = ({ active, payload }) => {
         {data.humidity !== null && (
           <>
             <p
-              style={{ color: "#2196F3", margin: "5px 0", fontWeight: "bold" }}
+              style={{ color: "#e0ffff ", margin: "5px 0", fontWeight: "bold" }}
             >
               💧 Humidity: {data.humidity.toFixed(0)}%
             </p>
@@ -241,7 +241,7 @@ function DeviceDashboard({ device, onBack }) {
                     >
                       Relative Humidity
                     </div>
-                    <strong style={{ color: "#2196F3" }}>
+                    <strong style={{ color: "#e0ffff " }}>
                       {latestReading.humidity.toFixed(0)}%
                     </strong>
                   </div>
@@ -451,12 +451,12 @@ function DeviceDashboard({ device, onBack }) {
                 name="Heat Index (Feels Like)"
               />
 
-              {/* Humidity Line (Blue, Solid) */}
+              {/* Humidity Line (Cyan, Solid) */}
               <Line
                 yAxisId="right"
                 type="monotone"
                 dataKey="humidity"
-                stroke="#2196F3"
+                stroke="#e0ffff "
                 strokeWidth={2.5}
                 dot={{ r: 3, fill: "#9370db" }}
                 name="Humidity (%)"
@@ -515,7 +515,7 @@ function DeviceDashboard({ device, onBack }) {
             Heat index / "Feels like" temperature (left axis)
           </div>
           <div style={{ marginTop: "5px" }}>
-            🔵 <strong style={{ color: "#9370db" }}>Purple line</strong> =
+            🔵 <strong style={{ color: "#e0ffff " }}>Cyan line</strong> =
             Humidity percentage (right axis)
           </div>
           {device.thresholdMin && device.thresholdMax}
@@ -554,7 +554,7 @@ function DeviceDashboard({ device, onBack }) {
                   {item.temperature.toFixed(1)}°C
                 </span>
                 {item.humidity !== null && item.humidity !== undefined && (
-                  <span style={{ color: "#9370db" }}>
+                  <span style={{ color: "#e0ffff " }}>
                     {item.humidity.toFixed(0)}% RH
                   </span>
                 )}
