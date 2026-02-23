@@ -26,7 +26,11 @@ function DeviceDashboard({ device, onBack }) {
       
       // Use date range if set, otherwise use limit
       if (startDate && endDate) {
-        url += `&startDate=${startDate}&endDate=${endDate}`;
+        // Convert local time to ISO string (accounts for timezone)
+        const startISO = new Date(startDate).toISOString();
+        const endISO = new Date(endDate).toISOString();
+        url += `&startDate=${startISO}&endDate=${endISO}`;
+        console.log("Querying range:", startISO, "to", endISO);
       } else {
         url += `&limit=${timeRange}`;
       }
