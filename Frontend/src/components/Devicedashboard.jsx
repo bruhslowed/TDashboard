@@ -210,3 +210,5 @@ function DeviceDashboard({ device, onBack }) {
     </div>
   );
 }
+
+export default DeviceDashboard;
