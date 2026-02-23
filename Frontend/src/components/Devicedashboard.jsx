@@ -137,21 +137,21 @@ function DeviceDashboard({ device, onBack }) {
 
   const isInBreach =
     latestReading &&
-    device.ThresholdMin &&
-    device.ThresholdMax &&
-    (latestReading.temperature < device.ThresholdMin ||
-      latestReading.temperature > device.ThresholdMax);
+    device.thresholdMin &&
+    device.thresholdMax &&
+    (latestReading.temperature < device.thresholdMin ||
+      latestReading.temperature > device.thresholdMax);
 
   // Calculate if heat index is in breach
   const heatIndexBreach =
     latestReading &&
     latestReading.humidity &&
-    device.ThresholdMin &&
-    device.ThresholdMax &&
+    device.thresholdMin &&
+    device.thresholdMax &&
     (calculateHeatIndex(latestReading.temperature, latestReading.humidity) <
-      device.ThresholdMin ||
+      device.thresholdMin ||
       calculateHeatIndex(latestReading.temperature, latestReading.humidity) >
-        device.ThresholdMax);
+        device.thresholdMax);
 
   return (
     <div style={{ padding: "40px" }}>
@@ -295,7 +295,7 @@ function DeviceDashboard({ device, onBack }) {
                 )}
 
               {/* Thresholds */}
-              {device.ThresholdMin && device.ThresholdMax && (
+              {device.thresholdMin && device.thresholdMax && (
                 <div>
                   <div style={{ fontSize: "0.5em", color: "#888" }}>
                     Threshold Range
@@ -307,7 +307,7 @@ function DeviceDashboard({ device, onBack }) {
                       fontSize: "0.7em",
                     }}
                   >
-                    {device.ThresholdMin}°C - {device.ThresholdMax}°C
+                    {device.thresholdMin}°C - {device.thresholdMax}°C
                   </div>
                   {(isInBreach || heatIndexBreach) && (
                     <div
@@ -415,11 +415,11 @@ function DeviceDashboard({ device, onBack }) {
               <Legend wrapperStyle={{ paddingTop: "10px" }} iconType="line" />
 
               {/* Comfort Zone Reference Area (optional) */}
-              {device.ThresholdMin && device.ThresholdMax && (
+              {device.thresholdMin && device.thresholdMax && (
                 <ReferenceArea
                   yAxisId="left"
-                  y1={device.ThresholdMin}
-                  y2={device.ThresholdMax}
+                  y1={device.thresholdMin}
+                  y2={device.thresholdMax}
                   stroke="#4CAF50"
                   strokeOpacity={0.3}
                   fill="#4CAF50"
@@ -464,11 +464,11 @@ function DeviceDashboard({ device, onBack }) {
               />
 
               {/* Max Threshold Line (Red, Dashed) */}
-              {device.ThresholdMax && (
+              {device.thresholdMax && (
                 <Line
                   yAxisId="left"
                   type="monotone"
-                  dataKey={() => device.ThresholdMax}
+                  dataKey={() => device.thresholdMax}
                   stroke="#f44336"
                   strokeWidth={2}
                   strokeDasharray="5 5"
@@ -478,11 +478,11 @@ function DeviceDashboard({ device, onBack }) {
               )}
 
               {/* Min Threshold Line (Light Blue, Dashed) */}
-              {device.ThresholdMin && (
+              {device.thresholdMin && (
                 <Line
                   yAxisId="left"
                   type="monotone"
-                  dataKey={() => device.ThresholdMin}
+                  dataKey={() => device.thresholdMin}
                   stroke="#03A9F4"
                   strokeWidth={2}
                   strokeDasharray="5 5"
@@ -518,7 +518,7 @@ function DeviceDashboard({ device, onBack }) {
             🔵 <strong style={{ color: "#2196F3" }}>Blue line</strong> =
             Humidity percentage (right axis)
           </div>
-          {device.ThresholdMin && device.ThresholdMax && (
+          {device.thresholdMin && device.thresholdMax && (
             <div style={{ marginTop: "8px", color: "#4CAF50" }}>
               The light green shaded area represents the comfortable temperature
               range.
