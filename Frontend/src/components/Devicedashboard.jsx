@@ -133,17 +133,6 @@ function DeviceDashboard({ device, onBack }) {
     (latestReading.temperature < device.thresholdMin ||
       latestReading.temperature > device.thresholdMax);
 
-  // Calculate if heat index is in breach
-  const heatIndexBreach =
-    latestReading &&
-    latestReading.humidity &&
-    device.thresholdMin &&
-    device.thresholdMax &&
-    (calculateHeatIndex(latestReading.temperature, latestReading.humidity) <
-      device.thresholdMin ||
-      calculateHeatIndex(latestReading.temperature, latestReading.humidity) >
-        device.thresholdMax);
-
   return (
     <div style={{ padding: "40px" }}>
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
@@ -185,7 +174,6 @@ function DeviceDashboard({ device, onBack }) {
           latestReading={latestReading}
           device={{ ...device, calculateHeatIndex }}
           isInBreach={isInBreach}
-          heatIndexBreach={heatIndexBreach}
         />
 
         {/* Time Range Selector */}
