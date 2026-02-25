@@ -10,12 +10,12 @@ npm install
 
 # Frontend folder
 
-cd Frontend # or wherever it is
+cd Frontend
 npm install
 
 # Backend folder
 
-cd ../Backend # or wherever it is  
+cd ../Backend  
 npm install
 
 # Start the development server (from root)
@@ -23,3 +23,7 @@ npm install
 npm start
 
 For deployment to Raspberry pi, check out DOCKER_DEPLOYMENT.md .
+
+# ESP8266 Wifi configuration
+
+Please refer to the ESP8266.ino file to change the wifi password.
